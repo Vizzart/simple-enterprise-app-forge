@@ -10,6 +10,8 @@ class Config:
 
     """
 
+    APP_NAME = os.getenv('APP_NAME', 'SEAF')
+
     FLASK_RUN_PORT = os.getenv('FLASK_RUN_PORT')
 
     MAX_CONTENT_LENGTH = os.getenv('MAX_CONTENT_LENGTH')
@@ -20,7 +22,7 @@ class Config:
         'pool_size': 10,
         'max_overflow': 10,
         'pool_recycle': 120,
-        'pol_pre_ping': True
+        'pool_pre_ping': True
     }
 
     @staticmethod

@@ -22,5 +22,8 @@ def create_app(config_name):
 
     migrate.init_app(app, db, render_as_batch=True, compare_type=True)
 
+    from .main import main as main_blueprint
+
+    app.register_blueprint(main_blueprint)
 
     return app
