@@ -28,3 +28,5 @@ Template for enterprise form-based web apps: local DB login + full RBAC (roles, 
 ## Conventions
 - New features go in blueprints registered in `create_app`.
 - Commits: Conventional Commits in English (`feat:`, `fix:`, `chore:`).
+- Tasks live in GitHub Issues + Project #4 — use the `pm-board` skill.
+- Skills in `.claude/skills/` are prefixed by area: `pm-` (project management), `app-`, `devops-`.
