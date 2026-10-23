@@ -20,6 +20,13 @@ Template for enterprise form-based web apps: local DB login + full RBAC (roles, 
 - In k8s, env vars are injected from Vault; `load_dotenv()` does not override existing env vars, so they take precedence. Keep reading config only via `os.getenv`.
 - `*.env` files are excluded by `.gitignore` and `.dockerignore` — never commit secrets or hardcode them in code.
 
+Env vars read by the app (template with dummy values: `.env.example` — keep it in sync):
+- `APP_NAME` — display name in templates (default `SEAF`)
+- `FLASK_CONFIG` — config profile (`dev`, `default`)
+- `FLASK_RUN_PORT` — port for `flask run`
+- `SECRET_KEY` — session/CSRF signing key (secret)
+- `SQLALCHEMY_DATABASE_URI` — PostgreSQL URL (secret); same name locally and in Vault
+
 ## Commands
 - Run locally: `flask --app app/flasky.py run`
 - Migrations: `flask --app app/flasky.py db migrate -m "..."` then `db upgrade`
