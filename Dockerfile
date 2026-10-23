@@ -15,5 +15,5 @@ RUN mkdir -p logs
 
 RUN pip install -r app/requirements.txt
 
-CMD ["python3", "-m", "gunicorn", "--bind", "0.0.0.0", "--workers", "1", "--threads", "16", "--max-requests", "0" , "--keep-alive", "60", "--timeout", "0", "--log-level", "info", "--error-logfile", "logs/gunicorn_error.log", "--access-logfile", "logs/gunicorn_access.log", "app.flasky:app"]
+CMD ["python3", "-m", "gunicorn", "--bind", "0.0.0.0:5000", "--workers", "1", "--threads", "16", "--max-requests", "0" , "--keep-alive", "60", "--timeout", "0", "--log-level", "info", "--error-logfile", "logs/gunicorn_error.log", "--access-logfile", "logs/gunicorn_access.log", "app.flasky:app"]
 
