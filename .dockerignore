@@ -1,0 +1,30 @@
+# Secrets / env (injected by k8s + Vault at runtime)
+**/.env
+**/*.env
+
+# VCS / IDE / tooling
+.git
+.gitignore
+.idea
+.vscode
+.claude
+CLAUDE.md
+
+# Python
+**/__pycache__
+**/*.py[cod]
+.venv
+venv
+.pytest_cache
+.mypy_cache
+.ruff_cache
+.coverage
+htmlcov
+
+# Logs / local data
+logs
+**/*.sqlite3
+**/*.db
+
+# OS
+**/.DS_Store

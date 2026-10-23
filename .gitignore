@@ -37,3 +37,12 @@ htmlcov/
 
 # Claude Code local settings
 .claude/settings.local.json
+
+# Logs
+logs/
+
+#env
+config-*.env
+*.env
+.env
+
