@@ -14,8 +14,6 @@ class Config:
 
     FLASK_RUN_PORT = os.getenv('FLASK_RUN_PORT')
 
-    MAX_CONTENT_LENGTH = os.getenv('MAX_CONTENT_LENGTH')
-
     SQLALCHEMY_ECHO = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ENGINE_OPTIONS = {
@@ -38,7 +36,7 @@ class DevelopmentConfig(Config):
     PERMANENT_SESSION_LIFETIME = timedelta(hours=8)
     SESSION_PERMANENT = True
 
-    SQLALCHEMY_DATABASE_URI = os.getenv('DEV_SQLALCHEMY_DATABASE_URL')
+    SQLALCHEMY_DATABASE_URI = os.getenv('SQLALCHEMY_DATABASE_URI')
 
 
 config = {
