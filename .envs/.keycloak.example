@@ -5,3 +5,11 @@ KC_BOOTSTRAP_ADMIN_PASSWORD=change-me
 # Keycloak DB credentials — same values as in .envs/.keycloak-db
 KC_DB_USERNAME=keycloak
 KC_DB_PASSWORD=change-me
+
+# Google identity provider (realm `infra`) — OAuth client from Google Cloud Console,
+# redirect URI http://localhost:8080/realms/infra/broker/google/endpoint
+GOOGLE_CLIENT_ID=change-me.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=change-me
+
+# GitLab OIDC client in realm `infra` — same value as in .envs/.gitlab
+GITLAB_OIDC_CLIENT_SECRET=change-me
