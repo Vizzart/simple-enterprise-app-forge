@@ -1,17 +1,13 @@
 # Backend + worker (docker compose: backend, worker). Copy to .envs/.flask and fill in.
 
-# Flask entry point and debug mode (DEBUG: True / False)
+# Flask entry point and debug mode (DEBUG: true / false)
 FLASK_APP=run.py
-DEBUG=False
+DEBUG=false
 # Port for the Flask dev server
 PORT=5000
 
-# Session / CSRF signing key — any long random string
+# Flask signing key — any long random string
 SECRET_KEY=change-me
-# Flask-JWT-Extended signing key and token lifetimes (minutes)
-JWT_SECRET_KEY=change-me
-JWT_ACCESS_EXPIRES=10
-JWT_REFRESH_EXPIRES=10
 
 # App database (service `db`, credentials from .envs/.postgres)
 DATABASE_URL=postgresql+psycopg://seaf:change-me@db:5432/seaf
@@ -25,6 +21,14 @@ API_TITLE=SEAF API
 KEYCLOAK_ISSUER=http://localhost:8080/realms/seaf
 KEYCLOAK_JWKS_URL=http://keycloak:8080/realms/seaf/protocol/openid-connect/certs
 KEYCLOAK_AUDIENCE=seaf-api
+# public Keycloak client used by the Swagger "Authorize" button
+KEYCLOAK_SWAGGER_CLIENT_ID=seaf-frontend
+
+# Celery broker / result backend (service `redis`)
+CELERY_BROKER_URL=redis://redis:6379/0
+CELERY_RESULT_BACKEND=redis://redis:6379/0
 
 # Bootstrap admins created by init_db() (JSON list, matched by Keycloak `sub`)
 ADMIN_USERS=[{"keycloak_id": "00000000-0000-0000-0000-000000000000", "email": "admin@seaf.local", "name": "Admin", "surname": "SEAF"}]
+# Optional: another RBAC seed file (default app/database/seed/rbac.yaml)
+# RBAC_SEED_FILE=/app/app/database/seed/rbac.yaml
