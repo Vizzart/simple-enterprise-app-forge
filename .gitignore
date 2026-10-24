@@ -45,4 +45,4 @@ htmlcov/
 logs/
 
 # Local notes (not part of the repo; shared knowledge lives in .claude/skills)
-docs/
+/docs/

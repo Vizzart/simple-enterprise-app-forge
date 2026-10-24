@@ -1,4 +1,4 @@
-o# Local dev "external" infra shared by the app: Keycloak (+ its Postgres), image registry.
+# Local dev "external" infra shared by the app: Keycloak (+ its Postgres), image registry.
 # Lifecycle is independent from the app stack in ../../docker-compose.yml. Use the Makefile: make infra-up
 name: seaf-infra
 
