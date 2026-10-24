@@ -15,6 +15,7 @@ TAG ?= $(ENV)
 
 .DEFAULT_GOAL := help
 .PHONY: help infra-up infra-down infra-logs keycloak-reset registry-push registry-ls \
+        gitlab-up gitlab-down gitlab-logs gitlab-admin \
         up down restart logs ps migrate reset-db lint
 
 help: ## Show available targets
@@ -22,11 +23,11 @@ help: ## Show available targets
 
 # --- external infra (Keycloak, registry) — keep it running -----------------
 
-infra-up: ## Start external infra (Keycloak + its DB, registry) and wait until healthy
+infra-up: ## Start external infra (Keycloak + its DB, registry; GitLab: make gitlab-up)
 	$(INFRA) up -d --wait
 
-infra-down: ## Stop external infra (data kept in volumes)
-	$(INFRA) down
+infra-down: ## Stop external infra incl. GitLab (data kept in volumes)
+	$(INFRA) --profile gitlab down
 
 infra-logs: ## Follow external infra logs
 	$(INFRA) logs -f
@@ -44,6 +45,20 @@ registry-ls: ## List repositories and tags in the local registry
 	@for repo in $$(curl -s http://$(REGISTRY)/v2/_catalog | python3 -c 'import sys,json;print(" ".join(json.load(sys.stdin)["repositories"]))'); do \
 		echo "$$repo: $$(curl -s http://$(REGISTRY)/v2/$$repo/tags/list | python3 -c 'import sys,json;print(" ".join(json.load(sys.stdin)["tags"] or []))')"; \
 	done
+
+gitlab-up: ## Start GitLab (first start takes several minutes) — http://localhost:8929
+	$(INFRA) --profile gitlab up -d --wait gitlab
+
+gitlab-down: ## Stop GitLab only (data kept in volumes)
+	$(INFRA) --profile gitlab stop gitlab
+
+gitlab-logs: ## Follow GitLab logs
+	$(INFRA) --profile gitlab logs -f gitlab
+
+gitlab-admin: ## Make a GitLab user admin: make gitlab-admin EMAIL=you@gmail.com
+	@test -n "$(EMAIL)" || { echo "usage: make gitlab-admin EMAIL=you@gmail.com"; exit 1; }
+	$(INFRA) --profile gitlab exec gitlab gitlab-rails runner \
+		'u = User.find_by_any_email("$(EMAIL)") or abort("no GitLab user with email $(EMAIL) — log in once first"); u.admin = true; u.save!; puts "#{u.username} is now admin"'
 
 # --- application stack (backend, worker, db, redis) -------------------------
 

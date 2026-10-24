@@ -1,0 +1,6 @@
+# GitLab CE (dev). root login: http://localhost:8929/users/sign_in?auto_sign_in=false
+# min. 8 chars, not a common password (GitLab rejects weak ones)
+GITLAB_ROOT_PASSWORD=change-me-long-random
+
+# OIDC client `gitlab` in Keycloak realm `infra` — same value as in .envs/.keycloak
+GITLAB_OIDC_CLIENT_SECRET=change-me
