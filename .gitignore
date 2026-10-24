@@ -44,5 +44,5 @@ htmlcov/
 # Logs
 logs/
 
-# Local notes (not part of the repo; shared knowledge lives in .claude/skills)
-/docs/
+# Local notes / wiki (not part of the repo; shared knowledge lives in .claude/skills)
+/wiki/

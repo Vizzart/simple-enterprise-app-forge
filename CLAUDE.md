@@ -32,7 +32,7 @@ Everything Python lives in `backend/` (Docker build context; run Python tooling 
 - `infra/dev/keycloak/import/seaf-realm.json` — realm `seaf` (the app): clients `seaf-frontend` / `seaf-api`, test users, audit events
 - `infra/dev/keycloak/import/infra-realm.json` — realm `infra` (infra tools, separate from app users): Google identity provider, client `gitlab`. Secrets are `${ENV}` placeholders resolved by Keycloak at import from `.envs/.keycloak`
 - `.claude/skills/` — project knowledge, committed: `app-rbac` (auth + RBAC model), `app-db-models` (model/migration conventions), `app-celery-tasks` (background jobs), `pm-board` (GitHub issues + kanban)
-- `docs/` — personal local notes, git-ignored; never put required project knowledge there or reference it
+- `wiki/` — personal local notes, git-ignored; never put required project knowledge there or reference it
 
 ## Config
 - Read config only via `os.environ` / `os.getenv` in `Config`; never hardcode secrets.
