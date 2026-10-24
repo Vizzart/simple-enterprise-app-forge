@@ -28,8 +28,9 @@ Everything Python lives in `backend/` (Docker build context; run Python tooling 
 - `backend/local.Dockerfile` — dev image; `backend/Dockerfile` — production image
 - `Makefile` — entry point for local dev (`make help`); `ENV` (default `dev`) selects `infra/$(ENV)/`
 - `docker-compose.yml` — app stack: `backend`, `worker`, `db`, `redis`
-- `infra/dev/compose.yml` — external dev infra, own lifecycle (project `seaf-infra`): `keycloak` + `keycloak-db`, `registry` (registry:2). Creates network `seaf-dev`; `backend` and `worker` join it to reach `keycloak:8080`
-- `infra/dev/keycloak/import/seaf-realm.json` — realm `seaf`: clients `seaf-frontend` / `seaf-api`, test users, audit events
+- `infra/dev/compose.yml` — external dev infra, own lifecycle (project `seaf-infra`): `keycloak` + `keycloak-db`, `registry` (registry:2), `gitlab` (compose profile `gitlab`, started only by `make gitlab-up`). Creates network `seaf-dev`; `backend` and `worker` join it to reach `keycloak:8080`
+- `infra/dev/keycloak/import/seaf-realm.json` — realm `seaf` (the app): clients `seaf-frontend` / `seaf-api`, test users, audit events
+- `infra/dev/keycloak/import/infra-realm.json` — realm `infra` (infra tools, separate from app users): Google identity provider, client `gitlab`. Secrets are `${ENV}` placeholders resolved by Keycloak at import from `.envs/.keycloak`
 - `.claude/skills/` — project knowledge, committed: `app-rbac` (auth + RBAC model), `app-db-models` (model/migration conventions), `app-celery-tasks` (background jobs), `pm-board` (GitHub issues + kanban)
 - `docs/` — personal local notes, git-ignored; never put required project knowledge there or reference it
 
@@ -41,7 +42,8 @@ Everything Python lives in `backend/` (Docker build context; run Python tooling 
 Env vars:
 - `.envs/.flask`: `FLASK_APP`, `DEBUG`, `PORT`, `SECRET_KEY`, `DATABASE_URL`, `API_VERSION`, `API_TITLE`, `CELERY_BROKER_URL`, `CELERY_RESULT_BACKEND`, `KEYCLOAK_SWAGGER_CLIENT_ID`
 - `.envs/.postgres`: `POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD` (names required by the official image)
-- `.envs/.keycloak`: `KC_BOOTSTRAP_ADMIN_USERNAME`, `KC_BOOTSTRAP_ADMIN_PASSWORD`, `KC_DB_USERNAME`, `KC_DB_PASSWORD`
+- `.envs/.keycloak`: `KC_BOOTSTRAP_ADMIN_USERNAME`, `KC_BOOTSTRAP_ADMIN_PASSWORD`, `KC_DB_USERNAME`, `KC_DB_PASSWORD`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `GITLAB_OIDC_CLIENT_SECRET`
+- `.envs/.gitlab`: `GITLAB_ROOT_PASSWORD`, `GITLAB_OIDC_CLIENT_SECRET` (same value as in `.envs/.keycloak`)
 - `.envs/.flask` (seed): `ADMIN_USERS` — JSON list of bootstrap admins (`keycloak_id`, `email`, `name`, `surname`) for `init_db()`
 - `.envs/.flask` (seed, optional): `RBAC_SEED_FILE` — path to another RBAC seed YAML (default `app/database/seed/rbac.yaml`)
 - `.envs/.keycloak-db`: `POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD` (same credentials as `KC_DB_*`)
@@ -52,6 +54,7 @@ Env vars:
 - `make up` / `down` / `restart` / `logs` / `ps` — app stack (API on host :5050 — :5000 is taken by macOS AirPlay; Postgres on host :5432); `up` starts infra first
 - `make reset-db` — wipe the app DB (Keycloak untouched)
 - Keycloak: admin console http://localhost:8080/admin (`.envs/.keycloak`); test users `anna`, `piotr`, `ewa`, `jan`, password `test`. The realm file is imported only when the realm does not exist: after editing `seaf-realm.json` run `make keycloak-reset` (wipes Keycloak DB incl. users and audit events)
+- GitLab: `make gitlab-up` (several minutes) → http://localhost:8929, login redirects to Keycloak realm `infra` → Google. `root` login (password in `.envs/.gitlab`): http://localhost:8929/users/sign_in?auto_sign_in=false. `make gitlab-admin EMAIL=...` grants admin after the first Google login. `make gitlab-down` stops it
 - Registry: `make registry-push` (backend image → `localhost:5001/seaf/backend:$(TAG)`), `make registry-ls`; pull with `docker pull localhost:5001/<repo>:<tag>`
 - Migrations: `make migrate`; new migration: `docker compose exec backend flask db migrate -m "..."`
 - Dev tools (from `backend/`, after `pip install -r app/requirements-dev.txt`):

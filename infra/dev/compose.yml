@@ -1,4 +1,4 @@
-# Local dev "external" infra shared by the app: Keycloak (+ its Postgres), image registry.
+# Local dev "external" infra shared by the app: Keycloak (+ its Postgres), image registry, GitLab (profile).
 # Lifecycle is independent from the app stack in ../../docker-compose.yml. Use the Makefile: make infra-up
 name: seaf-infra
 
@@ -60,6 +60,72 @@ services:
     networks:
       - seaf-dev
 
+  gitlab:
+    # heavy (~3-4 GB RAM): not started by `make infra-up`, use `make gitlab-up`
+    profiles: [gitlab]
+    image: gitlab/gitlab-ce:19.5.1-ce.0
+    hostname: gitlab
+    shm_size: 256m
+    depends_on:
+      keycloak:
+        condition: service_healthy
+    env_file:
+      - ../../.envs/.gitlab
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'http://localhost:8929'
+        nginx['listen_port'] = 8929
+        gitlab_rails['gitlab_shell_ssh_port'] = 2224
+        gitlab_rails['initial_root_password'] = ENV['GITLAB_ROOT_PASSWORD']
+
+        # lower memory for a laptop lab
+        puma['worker_processes'] = 0
+        sidekiq['concurrency'] = 5
+        prometheus_monitoring['enable'] = false
+
+        # login only through Keycloak realm `infra` (which brokers to Google)
+        gitlab_rails['omniauth_enabled'] = true
+        gitlab_rails['omniauth_allow_single_sign_on'] = ['openid_connect']
+        gitlab_rails['omniauth_block_auto_created_users'] = false
+        gitlab_rails['omniauth_auto_sign_in_with_provider'] = 'openid_connect'
+        gitlab_rails['omniauth_providers'] = [
+          {
+            name: 'openid_connect',
+            label: 'Keycloak (Google)',
+            args: {
+              name: 'openid_connect',
+              scope: ['openid', 'profile', 'email'],
+              response_type: 'code',
+              issuer: 'http://localhost:8080/realms/infra',
+              # the browser uses localhost:8080, the container reaches Keycloak as keycloak:8080
+              discovery: false,
+              pkce: true,
+              client_auth_method: 'basic',
+              uid_field: 'sub',
+              send_scope_to_token_endpoint: false,
+              client_options: {
+                identifier: 'gitlab',
+                secret: ENV['GITLAB_OIDC_CLIENT_SECRET'],
+                redirect_uri: 'http://localhost:8929/users/auth/openid_connect/callback',
+                authorization_endpoint: 'http://localhost:8080/realms/infra/protocol/openid-connect/auth',
+                end_session_endpoint: 'http://localhost:8080/realms/infra/protocol/openid-connect/logout',
+                token_endpoint: 'http://keycloak:8080/realms/infra/protocol/openid-connect/token',
+                userinfo_endpoint: 'http://keycloak:8080/realms/infra/protocol/openid-connect/userinfo',
+                jwks_uri: 'http://keycloak:8080/realms/infra/protocol/openid-connect/certs'
+              }
+            }
+          }
+        ]
+    volumes:
+      - gitlab-config:/etc/gitlab
+      - gitlab-logs:/var/log/gitlab
+      - gitlab-data:/var/opt/gitlab
+    ports:
+      - "8929:8929"
+      - "2224:22"
+    networks:
+      - seaf-dev
+
 networks:
   seaf-dev:
     name: seaf-dev
@@ -69,3 +135,9 @@ volumes:
     name: seaf-dev-keycloak-db
   registry-data:
     name: seaf-dev-registry
+  gitlab-config:
+    name: seaf-dev-gitlab-config
+  gitlab-logs:
+    name: seaf-dev-gitlab-logs
+  gitlab-data:
+    name: seaf-dev-gitlab-data
