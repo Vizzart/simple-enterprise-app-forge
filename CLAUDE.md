@@ -34,7 +34,7 @@ Everything Python lives in `backend/` (Docker build context; run Python tooling 
 - Inside compose, services reach each other by service name (`db`, `redis`, `keycloak`), not `localhost`.
 
 Env vars:
-- `.envs/.flask`: `FLASK_APP`, `DEBUG`, `SECRET_KEY`, `JWT_SECRET_KEY`, `JWT_ACCESS_EXPIRES`, `JWT_REFRESH_EXPIRES`, `SQLALCHEMY_DATABASE_URI`, `API_VERSION`, `API_TITLE`
+- `.envs/.flask`: `FLASK_APP`, `DEBUG`, `SECRET_KEY`, `JWT_SECRET_KEY`, `JWT_ACCESS_EXPIRES`, `JWT_REFRESH_EXPIRES`, `DATABASE_URL`, `API_VERSION`, `API_TITLE`
 - `.envs/.postgres`: `POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD` (names required by the official image)
 - `.envs/.keycloak`: `KC_BOOTSTRAP_ADMIN_USERNAME`, `KC_BOOTSTRAP_ADMIN_PASSWORD`, `KC_DB_USERNAME`, `KC_DB_PASSWORD`
 - `.envs/.keycloak-db`: `POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD` (same credentials as `KC_DB_*`)

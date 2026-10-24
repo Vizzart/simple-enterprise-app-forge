@@ -10,7 +10,7 @@ class Config:
     JWT_SECRET_KEY = os.environ.get("JWT_SECRET_KEY", "secret")
     JWT_ACCESS_EXPIRES: int = int(os.environ.get("JWT_ACCESS_EXPIRES", 10))
     JWT_REFRESH_EXPIRES: int = int(os.environ.get("JWT_REFRESH_EXPIRES", 10))
-    SQLALCHEMY_DATABASE_URI = os.environ.get("SQLALCHEMY_DATABASE_URI")
+    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL")
     SQLALCHEMY_ECHO = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ENGINE_OPTIONS = {
