@@ -16,7 +16,10 @@ Everything Python lives in `backend/` (Docker build context; run Python tooling 
 - `backend/app/config.py` — `Config` class, values only from env vars
 - `backend/app/extensions.py` — `db`, `migrate`, `jwt`, `api` instances
 - `backend/app/celery_init.py` — `celery_init_app(app)`, tasks run inside the app context
-- `backend/app/database/` — models and RBAC permissions (schema + diagram: `.claude/skills/app-rbac/`)
+- `backend/app/database/models/` — SQLAlchemy models (schema only; diagram: `.claude/skills/app-rbac/`)
+- `backend/app/database/repositories/` — data access functions per area (`users`, `roles`)
+- `backend/app/database/seed/` — `rbac.yaml` (initial roles/permissions/functions) + `init_db()`
+- `backend/app/rbac/access.py` — access rules (`user_can`, `user_is_admin`, ...)
 - `backend/run.py` — entry point for `flask` and `celery -A run`
 - `backend/app/requirements.txt` — pinned runtime deps; `requirements-dev.txt` adds ruff, mypy, pytest
 - `backend/pyproject.toml` — config for ruff (lint + import sort + format), mypy, pytest
@@ -37,6 +40,8 @@ Env vars:
 - `.envs/.flask`: `FLASK_APP`, `DEBUG`, `SECRET_KEY`, `JWT_SECRET_KEY`, `JWT_ACCESS_EXPIRES`, `JWT_REFRESH_EXPIRES`, `DATABASE_URL`, `API_VERSION`, `API_TITLE`
 - `.envs/.postgres`: `POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD` (names required by the official image)
 - `.envs/.keycloak`: `KC_BOOTSTRAP_ADMIN_USERNAME`, `KC_BOOTSTRAP_ADMIN_PASSWORD`, `KC_DB_USERNAME`, `KC_DB_PASSWORD`
+- `.envs/.flask` (seed): `ADMIN_USERS` — JSON list of bootstrap admins (`keycloak_id`, `email`, `name`, `surname`) for `init_db()`
+- `.envs/.flask` (seed, optional): `RBAC_SEED_FILE` — path to another RBAC seed YAML (default `app/database/seed/rbac.yaml`)
 - `.envs/.keycloak-db`: `POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD` (same credentials as `KC_DB_*`)
 - `.envs/.flask` (Keycloak): `KEYCLOAK_ISSUER` (`http://localhost:8080/realms/seaf`, must equal token `iss`), `KEYCLOAK_JWKS_URL` (`http://keycloak:8080/realms/seaf/protocol/openid-connect/certs`, internal URL), `KEYCLOAK_AUDIENCE` (`seaf-api`)
 
