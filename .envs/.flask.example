@@ -1,0 +1,27 @@
+# Backend + worker (docker compose: backend, worker). Copy to .envs/.flask and fill in.
+
+# Flask entry point and debug mode (DEBUG: True / False)
+FLASK_APP=run.py
+DEBUG=False
+# Port for the Flask dev server
+PORT=5000
+
+# Session / CSRF signing key — any long random string
+SECRET_KEY=change-me
+# Flask-JWT-Extended signing key and token lifetimes (minutes)
+JWT_SECRET_KEY=change-me
+JWT_ACCESS_EXPIRES=10
+JWT_REFRESH_EXPIRES=10
+
+# App database (service `db`, credentials from .envs/.postgres)
+DATABASE_URL=postgresql+psycopg://seaf:change-me@db:5432/seaf
+
+# Swagger metadata (flask-restx)
+API_VERSION=0.1.0
+API_TITLE=SEAF API
+
+# Keycloak token verification
+# ISSUER must equal the token `iss`; JWKS_URL is the internal URL reachable from the container
+KEYCLOAK_ISSUER=http://localhost:8080/realms/seaf
+KEYCLOAK_JWKS_URL=http://keycloak:8080/realms/seaf/protocol/openid-connect/certs
+KEYCLOAK_AUDIENCE=seaf-api
