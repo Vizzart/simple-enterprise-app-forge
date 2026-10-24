@@ -19,3 +19,11 @@ class Config:
         "pool_recycle": 30,
         "pool_pre_ping": True,
     }
+
+    CELERY = {
+        "broker_url": "redis://redis",
+        "result_backend": "redis://redis",
+        "task_ignore_result": True,
+        "worker_cancel_long_runing_tasks_on_connection_loss": True,
+    }
+
