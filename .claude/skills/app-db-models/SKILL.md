@@ -1,11 +1,11 @@
 ---
-name: db-models
+name: app-db-models
 description: Conventions for SQLAlchemy models, table naming and Alembic migrations in SEAF. Use when adding or changing a model, table, column, relation or migration, or when writing raw SQL against the app DB.
 ---
 
 # DB models and naming
 
-Schema, relations and access rules: the `rbac` skill (diagram: `.claude/skills/rbac/schema.drawio`). Keep it in sync with the models.
+Schema, relations and access rules: the `app-rbac` skill (diagram: `.claude/skills/app-rbac/schema.drawio`). Keep it in sync with the models.
 
 ## Naming
 - Tables and columns: `snake_case`, singular nouns (`dim_user`, not `dimUser` / `dim_users`).
@@ -39,4 +39,4 @@ Schema, relations and access rules: the `rbac` skill (diagram: `.claude/skills/r
 ## Migrations
 - After changing models: `docker compose exec backend flask db migrate -m "<what changed>"`, review the generated file in `backend/migrations/versions/` (autogenerate misses renames), then `flask db upgrade`.
 - Never edit a migration that is already on `main`; add a new one.
-- When the schema changes, update the `rbac` skill table and `.claude/skills/rbac/schema.drawio` in the same commit.
+- When the schema changes, update the `app-rbac` skill table and `.claude/skills/app-rbac/schema.drawio` in the same commit.
