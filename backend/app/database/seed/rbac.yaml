@@ -1,0 +1,32 @@
+# Dane startowe RBAC wczytywane przez init_db() / insert_roles().
+# Po inicjalizacji źródłem prawdy jest baza — init niczego nie usuwa ani nie nadpisuje.
+# Inny plik dla środowiska: zmienna RBAC_SEED_FILE.
+
+# kod uprawnienia: opis
+permissions:
+  user.read: Podgląd użytkowników
+  user.manage: Zakładanie i edycja użytkowników
+  role.read: Podgląd ról i uprawnień
+  role.manage: Nadawanie i odbieranie ról
+
+# funkcja wymaga WSZYSTKICH wymienionych uprawnień (reguła AND)
+functions:
+  users.list:
+    description: Lista użytkowników
+    requires: [user.read]
+  users.edit:
+    description: Edycja użytkownika
+    requires: [user.read, user.manage]
+  roles.list:
+    description: Lista ról
+    requires: [role.read]
+  roles.assign:
+    description: Nadawanie ról użytkownikom
+    requires: [user.read, role.read, role.manage]
+
+# rola dostaje uprawnienia, nigdy funkcje
+roles:
+  administrator:
+    permissions: [user.read, user.manage, role.read, role.manage]
+  viewer:
+    permissions: [user.read, role.read]

@@ -59,12 +59,22 @@ Override semantics:
 
 There is **no** direct user→permission or role→function assignment; do not add such tables.
 
-## Data access and seed (`backend/app/database/db.py`)
-- Use `db_manager` (`DatabaseManager`) for user/role queries and access checks; do not duplicate the logic.
-- Every user query returns **active users only**; pass `include_inactive=True` explicitly when inactive users are needed (admin screens, provisioning).
-- `user_can(user, function_code)` implements the access algorithm above; `has_role` / `user_is_admin` are also false for inactive users.
-- Seed data lives in the `PERMISSIONS`, `FUNCTIONS` (description + required permissions) and `ROLES` (granted permissions) constants. `init_db()` = `insert_roles()` + `insert_admins()`; both are idempotent (add missing rows, never delete or overwrite).
-- Bootstrap admins come from `ADMIN_USERS` (env, JSON list with `keycloak_id`, `email`, `name`, `surname`) and get the `administrator` role; existing users are matched by `keycloak_id` and are not reactivated.
+## Data access, access rules and seed
+Code is split by layer; models stay schema-only.
+
+| Module | Contains |
+|---|---|
+| `app/database/repositories/users.py` | `is_active`, `get_users`, `get_by_id`, `get_by_email`, `get_by_keycloak_id`, `get_by_role`, `with_multiple_roles`, `create`, `update` |
+| `app/database/repositories/roles.py` | `get_roles`, `get_role`, `get_or_raise`, `has_role`, `add_role`, `remove_role` |
+| `app/rbac/access.py` | `ADMIN_ROLE`, `user_is_active`, `user_is_admin`, `user_can`, `allowed_functions` |
+| `app/database/seed/` | `rbac.yaml` (permissions, functions + `requires`, roles + `permissions`), `init_db`, `insert_roles`, `insert_admins`, `load_rbac_seed` |
+
+- Module-level functions, no manager classes. Use them instead of querying `User`/`Role` ad hoc. New area = new module in `repositories/`; cross-table business rules go to a logic module like `rbac/access.py`.
+- Every user query returns **active users only**; pass `include_inactive=True` explicitly. `has_role`, `user_is_admin`, `user_can` are false for inactive users.
+- `users.create()` takes no roles (avoids a users↔roles import cycle): call `roles.add_role()` after it.
+- The DB is the source of truth at runtime; `rbac.yaml` is only the initial data. `init_db()` = `insert_roles()` + `insert_admins()`, idempotent: adds missing rows, never deletes or overwrites. The YAML is validated (unknown permission, function without `requires`) before anything is written. Other file per environment: `RBAC_SEED_FILE`.
+- Bootstrap admins come from `ADMIN_USERS` (env, JSON list: `keycloak_id`, `email`, `name`, `surname`), get `ADMIN_ROLE`; existing users are matched by `keycloak_id` and are not reactivated.
+- Function codes are referenced by endpoint code, so the `functions` list in `rbac.yaml` must match the codes used in endpoints.
 
 ## Keeping it in sync
 When the schema changes, update in the same commit: the models, a new Alembic migration, this skill's table, and `schema.drawio`.
