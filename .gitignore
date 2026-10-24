@@ -12,10 +12,13 @@ dist/
 venv/
 env/
 
-# Environment / secrets
+# Environment / secrets (all env files; only *.example templates are committed)
 .env
 .env.*
+*.env
+.envs/*
 !.env.example
+!.envs/*.example
 
 # Databases
 *.sqlite3
@@ -41,8 +44,5 @@ htmlcov/
 # Logs
 logs/
 
-#env
-config-*.env
-*.env
-.env
-
+# Local notes (not part of the repo; shared knowledge lives in .claude/skills)
+docs/
