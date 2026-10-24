@@ -1,5 +1,5 @@
          ---
-name: celery-tasks
+name: app-celery-tasks
 description: How background and periodic jobs work in SEAF (Celery + Redis) and how to write them. Use when adding or changing a Celery task, a beat schedule, the worker service, or app/celery_init.py, or when asked how background jobs work.
 ---
 

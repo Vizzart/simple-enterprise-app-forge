@@ -1,11 +1,11 @@
 ---
-name: rbac
+name: app-rbac
 description: SEAF authentication (Keycloak-only OIDC) and RBAC model - tables, relations, business rules and the function-access algorithm. Use when working on login, users, roles, permissions, functions, overrides, access checks, or when asked how authorization works.
 ---
 
 # Auth + RBAC
 
-Diagram: `schema.drawio` in this folder (open in draw.io / app.diagrams.net). Models: `backend/app/database/models/`. Model-writing conventions: the `db-models` skill.
+Diagram: `schema.drawio` in this folder (open in draw.io / app.diagrams.net). Models: `backend/app/database/models/`. Model-writing conventions: the `app-db-models` skill.
 
 ## Authentication: Keycloak only
 - The app has **no local login and stores no passwords**. Keycloak (OIDC) authenticates; the app only verifies Keycloak tokens (JWKS) and authorizes with the tables below.

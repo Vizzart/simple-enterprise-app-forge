@@ -1,6 +1,6 @@
 # SEAF — simple-enterprise-app-forge
 
-Template for enterprise apps: Keycloak login (OIDC only, no local passwords) + full RBAC in the app DB (roles, permissions, functions, per-user overrides) out of the box, so new apps start with business logic. Auth/RBAC model and rules: `rbac` skill.
+Template for enterprise apps: Keycloak login (OIDC only, no local passwords) + full RBAC in the app DB (roles, permissions, functions, per-user overrides) out of the box, so new apps start with business logic. Auth/RBAC model and rules: `app-rbac` skill.
 
 ## Stack
 - Python 3.14, Flask 3 (app factory), Flask-SQLAlchemy / SQLAlchemy 2, Flask-Migrate (Alembic)
@@ -16,7 +16,7 @@ Everything Python lives in `backend/` (Docker build context; run Python tooling 
 - `backend/app/config.py` — `Config` class, values only from env vars
 - `backend/app/extensions.py` — `db`, `migrate`, `jwt`, `api` instances
 - `backend/app/celery_init.py` — `celery_init_app(app)`, tasks run inside the app context
-- `backend/app/database/` — models and RBAC permissions (schema + diagram: `.claude/skills/rbac/`)
+- `backend/app/database/` — models and RBAC permissions (schema + diagram: `.claude/skills/app-rbac/`)
 - `backend/run.py` — entry point for `flask` and `celery -A run`
 - `backend/app/requirements.txt` — pinned runtime deps; `requirements-dev.txt` adds ruff, mypy, pytest
 - `backend/pyproject.toml` — config for ruff (lint + import sort + format), mypy, pytest
@@ -25,7 +25,7 @@ Everything Python lives in `backend/` (Docker build context; run Python tooling 
 - `docker-compose.yml` — app stack: `backend`, `worker`, `db`, `redis`
 - `infra/dev/compose.yml` — external dev infra, own lifecycle (project `seaf-infra`): `keycloak` + `keycloak-db`, `registry` (registry:2). Creates network `seaf-dev`; `backend` and `worker` join it to reach `keycloak:8080`
 - `infra/dev/keycloak/import/seaf-realm.json` — realm `seaf`: clients `seaf-frontend` / `seaf-api`, test users, audit events
-- `.claude/skills/` — project knowledge, committed: `rbac` (auth + RBAC model), `db-models` (model/migration conventions), `celery-tasks` (background jobs)
+- `.claude/skills/` — project knowledge, committed: `app-rbac` (auth + RBAC model), `app-db-models` (model/migration conventions), `app-celery-tasks` (background jobs), `pm-board` (GitHub issues + kanban)
 - `docs/` — personal local notes, git-ignored; never put required project knowledge there or reference it
 
 ## Config
@@ -55,7 +55,7 @@ Env vars:
 
 ## Conventions
 - New features go in RESTX namespaces registered in `create_app`.
-- DB: `snake_case` singular table names, `dim_` for entities, `map_` for join tables; full rules in `.claude/skills/db-models/SKILL.md`.
+- DB: `snake_case` singular table names, `dim_` for entities, `map_` for join tables; full rules in `.claude/skills/app-db-models/SKILL.md`.
 - Code must pass `ruff check`, `ruff format --check` and `mypy` (config in `pyproject.toml`, line length 100); run them after changes.
 - Commits: Conventional Commits in English (`feat:`, `fix:`, `chore:`).
 - Tasks live in GitHub Issues + Project #4 — use the `pm-board` skill.
