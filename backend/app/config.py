@@ -20,6 +20,10 @@ class Config:
         "pool_pre_ping": True,
     }
 
+    # bootstrap admins for init_db(), JSON list of
+    # {"keycloak_id": "...", "email": "...", "name": "...", "surname": "..."}
+    ADMIN_USERS: list[dict] = json.loads(os.environ.get("ADMIN_USERS", "[]"))
+
     CELERY = {
         "broker_url": "redis://redis",
         "result_backend": "redis://redis",

@@ -59,5 +59,12 @@ Override semantics:
 
 There is **no** direct user→permission or role→function assignment; do not add such tables.
 
+## Data access and seed (`backend/app/database/db.py`)
+- Use `db_manager` (`DatabaseManager`) for user/role queries and access checks; do not duplicate the logic.
+- Every user query returns **active users only**; pass `include_inactive=True` explicitly when inactive users are needed (admin screens, provisioning).
+- `user_can(user, function_code)` implements the access algorithm above; `has_role` / `user_is_admin` are also false for inactive users.
+- Seed data lives in the `PERMISSIONS`, `FUNCTIONS` (description + required permissions) and `ROLES` (granted permissions) constants. `init_db()` = `insert_roles()` + `insert_admins()`; both are idempotent (add missing rows, never delete or overwrite).
+- Bootstrap admins come from `ADMIN_USERS` (env, JSON list with `keycloak_id`, `email`, `name`, `surname`) and get the `administrator` role; existing users are matched by `keycloak_id` and are not reactivated.
+
 ## Keeping it in sync
 When the schema changes, update in the same commit: the models, a new Alembic migration, this skill's table, and `schema.drawio`.
