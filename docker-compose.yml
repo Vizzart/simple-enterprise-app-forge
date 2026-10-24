@@ -8,7 +8,7 @@ services:
                condition: service_healthy
 
         ports:
-          - "5000:5000"
+          - "5050:5000"  # host 5000 is taken by macOS AirPlay Receiver
         volumes:
           - ./backend:/app
 
@@ -32,7 +32,7 @@ services:
         networks:
           - internal-network
         healthcheck:
-          test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_NAME}"]
+          test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
           interval: 3s
           timeout: 3s
           retries: 5

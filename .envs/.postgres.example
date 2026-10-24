@@ -1,0 +1,5 @@
+# App database (docker compose: db). Copy to .envs/.postgres and fill in.
+# Must match the user, password and database in DATABASE_URL (.envs/.flask)
+POSTGRES_DB=seaf
+POSTGRES_USER=seaf
+POSTGRES_PASSWORD=change-me

@@ -1,14 +1,13 @@
-
-tak from app import create_app
-from app.database.db import db_manager
-from app.celery_init import import Celery
+from app import create_app
+from app.database import seed
+from app.database.repositories import roles, users
+from app.extensions import db
+from app.rbac import access
 
 flask_app = create_app()
-celery_app = flask_app.extensions['celery']
-flask_app.app_context().push()
+celery_app = flask_app.extensions["celery"]
 
 
 @flask_app.shell_context_processor
 def make_shell_context():
-    return dict(db=db_manager,
-    )
+    return {"db": db, "users": users, "roles": roles, "access": access, "seed": seed}

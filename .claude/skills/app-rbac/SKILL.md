@@ -12,6 +12,8 @@ Diagram: `schema.drawio` in this folder (open in draw.io / app.diagrams.net). Mo
 - A user is identified by the token `sub` claim, stored in `dim_user.keycloak_id`. Never match or merge accounts by email (it can change).
 - Flow: the SPA (client `seaf-frontend`, public, Authorization Code + PKCE S256) logs in at Keycloak and calls the API with `Authorization: Bearer <access token>`. The backend never redirects to Keycloak; it verifies the token signature via JWKS (`KEYCLOAK_JWKS_URL`), `iss` == `KEYCLOAK_ISSUER` and `aud` contains `KEYCLOAK_AUDIENCE` (`seaf-api`, added by an audience mapper). Flask-JWT-Extended is not used for Keycloak tokens.
 - Local dev realm: `infra/dev/keycloak/import/seaf-realm.json` (test users `anna`, `piotr`, `ewa`, `jan` / `test`; password grant enabled on `seaf-frontend` for curl/Swagger testing — dev only).
+- Implementation (`backend/app/auth/`): `tokens.verify_token()` (PyJWT, JWKS cached, RS256, `iss`/`aud`/`exp`, 30 s leeway) → `provisioning.sync_user()` (find by `sub` incl. inactive, create or refresh profile, never changes status) → `decorators.login_required` (401 no/invalid token, 503 Keycloak down, 403 inactive; sets `current_user()`) and `function_required(code)` (+403 when `access.user_can` is false). Endpoints use only these decorators.
+- There is no login endpoint in the API. Swagger "Authorize" uses the Keycloak password flow with `seaf-frontend` (dev only).
 - First login creates the `dim_user` row (just-in-time provisioning). Every login refreshes `email`, `name`, `surname` from claims `email`, `given_name`, `family_name`.
 - Roles and permissions are managed in the app DB, **not** in Keycloak roles.
 - External logins (Microsoft Entra ID, Google) are configured only in Keycloak as **Identity Providers** (identity brokering). The app keeps talking only to Keycloak: no app code or schema change. `dim_user.identity_provider` (optional, from an `identity_provider` claim mapper) is informational only.
@@ -58,6 +60,23 @@ Override semantics:
 - If the same function is overridden for several users with the same role, the role should get the permission instead.
 
 There is **no** direct user→permission or role→function assignment; do not add such tables.
+
+## Data access, access rules and seed
+Code is split by layer; models stay schema-only.
+
+| Module | Contains |
+|---|---|
+| `app/database/repositories/users.py` | `is_active`, `get_users`, `get_by_id`, `get_by_email`, `get_by_keycloak_id`, `get_by_role`, `with_multiple_roles`, `create`, `update` |
+| `app/database/repositories/roles.py` | `get_roles`, `get_role`, `get_or_raise`, `has_role`, `add_role`, `remove_role` |
+| `app/rbac/access.py` | `ADMIN_ROLE`, `user_is_active`, `user_is_admin`, `user_can`, `allowed_functions` |
+| `app/database/seed/` | `rbac.yaml` (permissions, functions + `requires`, roles + `permissions`), `init_db`, `insert_roles`, `insert_admins`, `load_rbac_seed` |
+
+- Module-level functions, no manager classes. Use them instead of querying `User`/`Role` ad hoc. New area = new module in `repositories/`; cross-table business rules go to a logic module like `rbac/access.py`.
+- Every user query returns **active users only**; pass `include_inactive=True` explicitly. `has_role`, `user_is_admin`, `user_can` are false for inactive users.
+- `users.create()` takes no roles (avoids a users↔roles import cycle): call `roles.add_role()` after it.
+- The DB is the source of truth at runtime; `rbac.yaml` is only the initial data. `init_db()` = `insert_roles()` + `insert_admins()`, idempotent: adds missing rows, never deletes or overwrites. The YAML is validated (unknown permission, function without `requires`) before anything is written. Other file per environment: `RBAC_SEED_FILE`.
+- Bootstrap admins come from `ADMIN_USERS` (env, JSON list: `keycloak_id`, `email`, `name`, `surname`), get `ADMIN_ROLE`; existing users are matched by `keycloak_id` and are not reactivated.
+- Function codes are referenced by endpoint code, so the `functions` list in `rbac.yaml` must match the codes used in endpoints.
 
 ## Keeping it in sync
 When the schema changes, update in the same commit: the models, a new Alembic migration, this skill's table, and `schema.drawio`.

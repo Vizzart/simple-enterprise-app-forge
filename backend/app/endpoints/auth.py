@@ -1,41 +1,31 @@
-from flask import request
-from flask_jwt_extended import (
-    create_access_token,
-    create_refresh_token,
-    get_jwt_identity,
-    jwt_required
-)
+"""Namespace `auth`: dane zalogowanego użytkownika.
+
+Logowanie odbywa się w Keycloak (frontend / Swagger "Authorize"), nie w tym API.
+"""
 
 from flask_restx import Namespace, Resource
-#TODO
-#keycloack
 
-from marshmallow import ValidationError
+from app.auth import current_user, login_required
+from app.docs import models
+from app.rbac import access
 
-from app.config import Config
-from app.database.db import db_manager
-from app.docs.models import login
+ns = Namespace("auth", description="Current user — login happens in Keycloak")
 
 
-ns = Namespace("auth")
+@ns.route("/me")
+class Me(Resource):
+    @ns.doc("get_current_user")
+    @ns.marshal_with(models.me)
+    @ns.response(401, "Missing or invalid token", models.error)
+    @ns.response(403, "User is inactive", models.error)
+    @ns.response(503, "Keycloak is unavailable", models.error)
+    @login_required
+    def get(self):
+        """Zalogowany użytkownik: profil, role, czy admin i dostępne funkcje.
 
-
-def create_access_and_refresh_token(email: str) -> Tuple[str, str]:
-    access = create_access_token(identity=email)
-    refresh = create_refresh_token(
-        identity=email,
-        expires_delta=timedelta(hours=Config.JWT_REFRESH_EXPIRES)
-    )
-    return access, refresh
-
-
-@ns.response(200, "Success")
-@ns.response(401, "Unauthorized")
-@ns.response(400, "Bad Request")
-@ns.response(403, "Forbidden")
-@ns.response(404, "Not Found")
-@ns.response(500, "Internal Server Error")
-@ns.route("/login")
-class Login(Resource):
-    return 200
-
+        Pierwsze wywołanie zakłada użytkownika w bazie (just-in-time provisioning).
+        """
+        user = current_user()
+        user.is_admin = access.user_is_admin(user)
+        user.functions = access.allowed_functions(user)
+        return user
