@@ -1,0 +1,4 @@
+# Postgres for Keycloak (dev). Must match KC_DB_USERNAME / KC_DB_PASSWORD in .envs/.keycloak
+POSTGRES_DB=keycloak
+POSTGRES_USER=keycloak
+POSTGRES_PASSWORD=change-me

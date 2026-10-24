@@ -16,6 +16,7 @@ services:
           - .envs/.flask
         networks:
           - internal-network
+          - seaf-dev
         command: sh -c "flask --debug run --host=0.0.0.0"
 
 
@@ -55,11 +56,15 @@ services:
         - .envs/.flask
       networks:
         - internal-network
+        - seaf-dev
       command: sh -c "celery -A run worker -B --loglevel INFO"
 
 networks:
   internal-network:
     driver: bridge
+  # created by infra/dev/compose.yml (keycloak, ...) — start it first: make infra-up
+  seaf-dev:
+    external: true
 
 volumes:
   postgres_data:

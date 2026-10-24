@@ -1,0 +1,71 @@
+o# Local dev "external" infra shared by the app: Keycloak (+ its Postgres), image registry.
+# Lifecycle is independent from the app stack in ../../docker-compose.yml. Use the Makefile: make infra-up
+name: seaf-infra
+
+services:
+  keycloak-db:
+    image: postgres:18
+    env_file:
+      - ../../.envs/.keycloak-db
+    volumes:
+      - keycloak-db-data:/var/lib/postgresql
+    networks:
+      - seaf-dev
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+
+  keycloak:
+    # dev mode: HTTP, no TLS. Realm imported from ./keycloak/import only if it does not exist yet
+    # (make keycloak-reset to re-import after editing seaf-realm.json)
+    image: quay.io/keycloak/keycloak:26.8.1
+    command: start-dev --import-realm
+    depends_on:
+      keycloak-db:
+        condition: service_healthy
+    env_file:
+      - ../../.envs/.keycloak
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://keycloak-db:5432/keycloak
+      # tokens always carry iss=http://localhost:8080/realms/seaf,
+      # even when the backend reaches Keycloak as http://keycloak:8080
+      KC_HOSTNAME: http://localhost:8080
+      KC_HOSTNAME_BACKCHANNEL_DYNAMIC: "false"
+      KC_HEALTH_ENABLED: "true"
+    volumes:
+      - ./keycloak/import:/opt/keycloak/data/import:ro
+    ports:
+      - "8080:8080"
+    networks:
+      - seaf-dev
+    healthcheck:
+      test: ["CMD-SHELL", "exec 3<>/dev/tcp/127.0.0.1/9000 && printf 'GET /health/ready HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n' >&3 && grep -q UP <&3"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+
+  registry:
+    # images pushed here live in the seaf-dev-registry volume and survive
+    # removing local images / containers: docker pull localhost:5001/<repo>:<tag>
+    image: registry:2
+    environment:
+      REGISTRY_STORAGE_DELETE_ENABLED: "true"
+    volumes:
+      - registry-data:/var/lib/registry
+    ports:
+      - "5001:5000"
+    networks:
+      - seaf-dev
+
+networks:
+  seaf-dev:
+    name: seaf-dev
+
+volumes:
+  keycloak-db-data:
+    name: seaf-dev-keycloak-db
+  registry-data:
+    name: seaf-dev-registry
