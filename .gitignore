@@ -45,4 +45,5 @@ htmlcov/
 logs/
 
 # Local notes / wiki (not part of the repo; shared knowledge lives in .claude/skills)
-/wiki/
+wiki.seaf/
+lab/
