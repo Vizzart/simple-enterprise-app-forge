@@ -1,4 +1,4 @@
-# Local dev "external" infra shared by the app: Keycloak (+ its Postgres), image registry, GitLab (profile).
+# Local dev "external" infra shared by the app: Keycloak (+ its Postgres), Vault, image registry, GitLab (profile).
 # Lifecycle is independent from the app stack in ../../docker-compose.yml. Use the Makefile: make infra-up
 name: seaf-infra
 
@@ -47,6 +47,42 @@ services:
       timeout: 3s
       retries: 30
 
+  vault:
+    # server mode with file storage (not -dev): starts sealed, needs `make vault-init` once
+    # and `make vault-unseal` after every restart. Data lives in the seaf-dev-vault volume.
+    image: hashicorp/vault:2.2.2
+    command: server
+    cap_add:
+      - IPC_LOCK
+    environment:
+      VAULT_ADDR: http://127.0.0.1:8200
+    volumes:
+      - ./vault/config:/vault/config:ro
+      - vault-data:/vault/file
+    ports:
+      - "8200:8200"
+    networks:
+      - seaf-dev
+    healthcheck:
+      # sealed / uninitialized Vault still counts as healthy (the API answers)
+      test: ["CMD-SHELL", "wget -qO- 'http://127.0.0.1:8200/v1/sys/health?sealedcode=200&uninitcode=200' >/dev/null"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+
+  vault-localhost:
+    # shares Vault's network namespace: Vault's localhost:8080 reaches Keycloak, because
+    # Keycloak advertises issuer http://localhost:8080 (KC_HOSTNAME) and Vault OIDC requires
+    # oidc_discovery_url to equal that issuer. Restart it together with `vault`.
+    image: alpine/socat
+    network_mode: "service:vault"
+    command: TCP-LISTEN:8080,fork,reuseaddr TCP:keycloak:8080
+    depends_on:
+      vault:
+        condition: service_healthy
+      keycloak:
+        condition: service_healthy
+
   registry:
     # images pushed here live in the seaf-dev-registry volume and survive
     # removing local images / containers: docker pull localhost:5001/<repo>:<tag>
@@ -85,8 +121,13 @@ services:
 
         # login only through Keycloak realm `infra` (which brokers to Google)
         gitlab_rails['omniauth_enabled'] = true
+        # accounts are created only at the first login of a user that exists in Keycloak (no sign-up
+        # form: `make gitlab-up` switches it off). A login with a new Keycloak user id (e.g. after
+        # `make keycloak-reset`) is linked to the GitLab account with the same email instead of failing
+        # with "Email has already been taken".
         gitlab_rails['omniauth_allow_single_sign_on'] = ['openid_connect']
         gitlab_rails['omniauth_block_auto_created_users'] = false
+        gitlab_rails['omniauth_auto_link_user'] = ['openid_connect']
         gitlab_rails['omniauth_auto_sign_in_with_provider'] = 'openid_connect'
         gitlab_rails['omniauth_providers'] = [
           {
@@ -135,6 +176,8 @@ volumes:
     name: seaf-dev-keycloak-db
   registry-data:
     name: seaf-dev-registry
+  vault-data:
+    name: seaf-dev-vault
   gitlab-config:
     name: seaf-dev-gitlab-config
   gitlab-logs:

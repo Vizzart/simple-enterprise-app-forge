@@ -13,3 +13,6 @@ GOOGLE_CLIENT_SECRET=change-me
 
 # GitLab OIDC client in realm `infra` — same value as in .envs/.gitlab
 GITLAB_OIDC_CLIENT_SECRET=change-me
+
+# Vault OIDC client in realm `infra`
+VAULT_OIDC_CLIENT_SECRET=change-me

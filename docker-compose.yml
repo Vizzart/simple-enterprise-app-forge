@@ -1,12 +1,12 @@
 services:
     backend:
+        image: ${REGISTRY:-localhost:5001}/seaf/backend:${TAG:-dev}
         build:
             context: backend
             dockerfile: local.Dockerfile
         depends_on:
             db:
                condition: service_healthy
-
         ports:
           - "5050:5000"  # host 5000 is taken by macOS AirPlay Receiver
         volumes:
@@ -42,6 +42,7 @@ services:
         - internal-network
 
     worker:
+      image: ${REGISTRY:-localhost:5001}/seaf/worker:${TAG:-dev}
       build:
         context: backend
         dockerfile: local.Dockerfile
