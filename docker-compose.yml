@@ -63,7 +63,7 @@ services:
 networks:
   internal-network:
     driver: bridge
-  # created by infra/dev/compose.yml (keycloak, ...) — start it first: make infra-up
+  # created by the infrastructure stack of the devops repo (keycloak, ...) — start it first: make -C ../devops infrastructure
   seaf-dev:
     external: true
 

@@ -1,0 +1,320 @@
+{
+  ".claude/skills/pm-board/scripts/board.sh": {
+    "mtime": 1792830679.2909508,
+    "seen": 1793055110.568761,
+    "ast_hash": "2752b28567155ce11aac13e1a1e1ecdc",
+    "semantic_hash": "2752b28567155ce11aac13e1a1e1ecdc"
+  },
+  ".claude/skills/pm-board/scripts/move.sh": {
+    "mtime": 1792830679.2915769,
+    "seen": 1793055110.568774,
+    "ast_hash": "b0967f0d31664c4f2bf9052b65dfec17",
+    "semantic_hash": "b0967f0d31664c4f2bf9052b65dfec17"
+  },
+  "backend/app/__init__.py": {
+    "mtime": 1792864060.9131098,
+    "seen": 1793055110.568778,
+    "ast_hash": "7d1a4b8ab3d79138370b5f712f681cde",
+    "semantic_hash": "7d1a4b8ab3d79138370b5f712f681cde"
+  },
+  "backend/app/auth/__init__.py": {
+    "mtime": 1792864060.9135888,
+    "seen": 1793055110.56878,
+    "ast_hash": "b9a61803f1c4c0d6051ee83f75e213c6",
+    "semantic_hash": "b9a61803f1c4c0d6051ee83f75e213c6"
+  },
+  "backend/app/auth/decorators.py": {
+    "mtime": 1792864060.9140844,
+    "seen": 1793055110.568782,
+    "ast_hash": "606faa5d2129cd76804ae4f2a295b9fe",
+    "semantic_hash": "606faa5d2129cd76804ae4f2a295b9fe"
+  },
+  "backend/app/auth/provisioning.py": {
+    "mtime": 1792864060.9148183,
+    "seen": 1793055110.5687838,
+    "ast_hash": "9090a9cd18ab8a6a38d2eb7dd39263aa",
+    "semantic_hash": "9090a9cd18ab8a6a38d2eb7dd39263aa"
+  },
+  "backend/app/auth/tokens.py": {
+    "mtime": 1792864060.9152615,
+    "seen": 1793055110.568786,
+    "ast_hash": "ff4526501e7423f76f125de57ea98cd9",
+    "semantic_hash": "ff4526501e7423f76f125de57ea98cd9"
+  },
+  "backend/app/celery_init.py": {
+    "mtime": 1792864060.9160538,
+    "seen": 1793055110.568788,
+    "ast_hash": "17d1604c086982b37d44b782b018d648",
+    "semantic_hash": "17d1604c086982b37d44b782b018d648"
+  },
+  "backend/app/cli/__init__.py": {
+    "mtime": 1792830679.2984478,
+    "seen": 1793055110.56879,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "backend/app/config.py": {
+    "mtime": 1792864060.916847,
+    "seen": 1793055110.5687912,
+    "ast_hash": "60f9b5ed4dddf9eeb55f8d8f7dbd1637",
+    "semantic_hash": "60f9b5ed4dddf9eeb55f8d8f7dbd1637"
+  },
+  "backend/app/database/__init__.py": {
+    "mtime": 1792830679.2990787,
+    "seen": 1793055110.568793,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "backend/app/database/models/__init__.py": {
+    "mtime": 1792830679.299977,
+    "seen": 1793055110.568795,
+    "ast_hash": "e73d47f8233b952efebe2e1b16d8975d",
+    "semantic_hash": "e73d47f8233b952efebe2e1b16d8975d"
+  },
+  "backend/app/database/models/associations/PermissionFunction.py": {
+    "mtime": 1792830679.3004549,
+    "seen": 1793055110.5687969,
+    "ast_hash": "362baa444adab3c14238d06a0500c89e",
+    "semantic_hash": "362baa444adab3c14238d06a0500c89e"
+  },
+  "backend/app/database/models/associations/RolePermission.py": {
+    "mtime": 1792830679.3008802,
+    "seen": 1793055110.568799,
+    "ast_hash": "ce4029d844935af9fa7a0f051dec781a",
+    "semantic_hash": "ce4029d844935af9fa7a0f051dec781a"
+  },
+  "backend/app/database/models/associations/RoleUser.py": {
+    "mtime": 1792830679.3013008,
+    "seen": 1793055110.5688,
+    "ast_hash": "4a31f3dc84b628f3e1fd48221655229b",
+    "semantic_hash": "4a31f3dc84b628f3e1fd48221655229b"
+  },
+  "backend/app/database/models/associations/UserFunctionOverride.py": {
+    "mtime": 1792830679.3016708,
+    "seen": 1793055110.568802,
+    "ast_hash": "8a27a674e2ac8293cc3ff1259fbc41e1",
+    "semantic_hash": "8a27a674e2ac8293cc3ff1259fbc41e1"
+  },
+  "backend/app/database/models/associations/__init__.py": {
+    "mtime": 1792830679.302164,
+    "seen": 1793055110.568804,
+    "ast_hash": "da8decf4eb63abc034af461a5865a402",
+    "semantic_hash": "da8decf4eb63abc034af461a5865a402"
+  },
+  "backend/app/database/models/functions/Function.py": {
+    "mtime": 1792830679.3025637,
+    "seen": 1793055110.5688052,
+    "ast_hash": "0fb42af220dcb24288257e5d805ca374",
+    "semantic_hash": "0fb42af220dcb24288257e5d805ca374"
+  },
+  "backend/app/database/models/functions/__init__.py": {
+    "mtime": 1792830679.3030221,
+    "seen": 1793055110.568807,
+    "ast_hash": "4653faaf4c889e0afe80210751a896d0",
+    "semantic_hash": "4653faaf4c889e0afe80210751a896d0"
+  },
+  "backend/app/database/models/permissions/Permission.py": {
+    "mtime": 1792830679.303492,
+    "seen": 1793055110.5688078,
+    "ast_hash": "bd39c75ba33019279a0037e5ad3992a5",
+    "semantic_hash": "bd39c75ba33019279a0037e5ad3992a5"
+  },
+  "backend/app/database/models/permissions/__init__.py": {
+    "mtime": 1792830679.3040028,
+    "seen": 1793055110.56881,
+    "ast_hash": "e0a6cbadce952bb39a62a36d15656759",
+    "semantic_hash": "e0a6cbadce952bb39a62a36d15656759"
+  },
+  "backend/app/database/models/roles/Role.py": {
+    "mtime": 1792830679.3044343,
+    "seen": 1793055110.5688121,
+    "ast_hash": "6a15fc207d77b0a82ef2e078bda8a729",
+    "semantic_hash": "6a15fc207d77b0a82ef2e078bda8a729"
+  },
+  "backend/app/database/models/roles/__init__.py": {
+    "mtime": 1792830679.3048494,
+    "seen": 1793055110.568814,
+    "ast_hash": "b1fb7590aa1988b7cd6e520fabb95e24",
+    "semantic_hash": "b1fb7590aa1988b7cd6e520fabb95e24"
+  },
+  "backend/app/database/models/users/User.py": {
+    "mtime": 1792830679.3052561,
+    "seen": 1793055110.5688162,
+    "ast_hash": "62cced35f7241168eb9b1da6025bf261",
+    "semantic_hash": "62cced35f7241168eb9b1da6025bf261"
+  },
+  "backend/app/database/models/users/__init__.py": {
+    "mtime": 1792830679.305667,
+    "seen": 1793055110.568817,
+    "ast_hash": "129aafe0f8a2c3eed6dfcd1479766267",
+    "semantic_hash": "129aafe0f8a2c3eed6dfcd1479766267"
+  },
+  "backend/app/database/repositories/__init__.py": {
+    "mtime": 1792864060.9169612,
+    "seen": 1793055110.568819,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "backend/app/database/repositories/roles.py": {
+    "mtime": 1792864060.9181077,
+    "seen": 1793055110.56882,
+    "ast_hash": "a7f288f3488dbd3811c4f520c953271d",
+    "semantic_hash": "a7f288f3488dbd3811c4f520c953271d"
+  },
+  "backend/app/database/repositories/users.py": {
+    "mtime": 1792864060.9185402,
+    "seen": 1793055110.568822,
+    "ast_hash": "2390c14ee6c9cb92ab30064865f94c36",
+    "semantic_hash": "2390c14ee6c9cb92ab30064865f94c36"
+  },
+  "backend/app/database/seed/__init__.py": {
+    "mtime": 1792864060.9189692,
+    "seen": 1793055110.568824,
+    "ast_hash": "18616c0ca350f4b58a4ca899b4f421a7",
+    "semantic_hash": "18616c0ca350f4b58a4ca899b4f421a7"
+  },
+  "backend/app/database/seed/loader.py": {
+    "mtime": 1792864060.9195368,
+    "seen": 1793055110.568825,
+    "ast_hash": "0cbbc665849b9f9d4d0ef1fd6dba5210",
+    "semantic_hash": "0cbbc665849b9f9d4d0ef1fd6dba5210"
+  },
+  "backend/app/database/seed/rbac.yaml": {
+    "mtime": 1792864060.9200363,
+    "seen": 1793055110.568827,
+    "ast_hash": "0efb768f6efe5cd50737ae5fa6dcae2a",
+    "semantic_hash": "0efb768f6efe5cd50737ae5fa6dcae2a"
+  },
+  "backend/app/docs/__init__.py": {
+    "mtime": 1792864060.9201453,
+    "seen": 1793055110.5688288,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "backend/app/docs/models.py": {
+    "mtime": 1792864060.9206853,
+    "seen": 1793055110.56883,
+    "ast_hash": "b331ca4e4631dd81477a6817c52da928",
+    "semantic_hash": "b331ca4e4631dd81477a6817c52da928"
+  },
+  "backend/app/endpoints/__init__.py": {
+    "mtime": 1792830679.3058324,
+    "seen": 1793055110.568832,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "backend/app/endpoints/auth.py": {
+    "mtime": 1792864060.9215877,
+    "seen": 1793055110.568833,
+    "ast_hash": "47b2162fc638c6f5d178f83612335d89",
+    "semantic_hash": "47b2162fc638c6f5d178f83612335d89"
+  },
+  "backend/app/endpoints/utils/__init__.py": {
+    "mtime": 1792830679.3065014,
+    "seen": 1793055110.568835,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "backend/app/extensions.py": {
+    "mtime": 1792864060.922295,
+    "seen": 1793055110.5688362,
+    "ast_hash": "9bbc60e78b736b1034c1f89de8ecf39e",
+    "semantic_hash": "9bbc60e78b736b1034c1f89de8ecf39e"
+  },
+  "backend/app/rbac/__init__.py": {
+    "mtime": 1792864060.9224393,
+    "seen": 1793055110.568838,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "backend/app/rbac/access.py": {
+    "mtime": 1792864060.9232934,
+    "seen": 1793055110.5688388,
+    "ast_hash": "1b7ed77f4508cac26cb5de156ee3c235",
+    "semantic_hash": "1b7ed77f4508cac26cb5de156ee3c235"
+  },
+  "backend/pyproject.toml": {
+    "mtime": 1792830679.308714,
+    "seen": 1793055110.568841,
+    "ast_hash": "3dc9e4ab0367552ca164a1f86ff4aee2",
+    "semantic_hash": "3dc9e4ab0367552ca164a1f86ff4aee2"
+  },
+  "backend/run.py": {
+    "mtime": 1792864060.9249513,
+    "seen": 1793055110.5688431,
+    "ast_hash": "e41c5dfe6521c5ff13184afa745c44e4",
+    "semantic_hash": "e41c5dfe6521c5ff13184afa745c44e4"
+  },
+  "docker-compose.yml": {
+    "mtime": 1793140628.6972845,
+    "seen": 1793193016.360405,
+    "ast_hash": "3437c5dfbfa4d51ee0a9ad55ca20ef20",
+    "semantic_hash": "3437c5dfbfa4d51ee0a9ad55ca20ef20"
+  },
+  "infra/dev/compose.yml": {
+    "mtime": 1792864060.9262676,
+    "seen": 1793055110.568846,
+    "ast_hash": "d9d4274d0968f898ecbcd85532543614",
+    "semantic_hash": "d9d4274d0968f898ecbcd85532543614"
+  },
+  "infra/dev/keycloak/import/infra-realm.json": {
+    "mtime": 1792864060.9272616,
+    "seen": 1793055110.5688488,
+    "ast_hash": "b464866978b1ad352088c52a5f11edcc",
+    "semantic_hash": "b464866978b1ad352088c52a5f11edcc"
+  },
+  "infra/dev/keycloak/import/seaf-realm.json": {
+    "mtime": 1792864060.9277422,
+    "seen": 1793055110.5688498,
+    "ast_hash": "f574cdf5ba08b3ccb54bd80e456a594f",
+    "semantic_hash": "f574cdf5ba08b3ccb54bd80e456a594f"
+  },
+  ".claude/skills/app-celery-tasks/SKILL.md": {
+    "mtime": 1792830999.4497023,
+    "seen": 1793055110.568852,
+    "ast_hash": "dd6c4bff1a39f6791864966ae678ed4a",
+    "semantic_hash": "dd6c4bff1a39f6791864966ae678ed4a"
+  },
+  ".claude/skills/app-db-models/SKILL.md": {
+    "mtime": 1792830999.4501135,
+    "seen": 1793055110.568854,
+    "ast_hash": "658ddbcca545cccb70500688a252d19d",
+    "semantic_hash": "658ddbcca545cccb70500688a252d19d"
+  },
+  ".claude/skills/app-rbac/SKILL.md": {
+    "mtime": 1792864060.9067528,
+    "seen": 1793055110.568855,
+    "ast_hash": "e96ae390f0cad8fe71cd200d61656d33",
+    "semantic_hash": "e96ae390f0cad8fe71cd200d61656d33"
+  },
+  ".claude/skills/pm-board/SKILL.md": {
+    "mtime": 1792830679.289669,
+    "seen": 1793055110.5688572,
+    "ast_hash": "bce2638892bb734aa3b4347b2a0b792b",
+    "semantic_hash": "bce2638892bb734aa3b4347b2a0b792b"
+  },
+  "CLAUDE.md": {
+    "mtime": 1793140462.602965,
+    "seen": 1793193016.360418,
+    "ast_hash": "86f51422c89625bcd1d659afec669852",
+    "semantic_hash": "86f51422c89625bcd1d659afec669852"
+  },
+  "README.md": {
+    "mtime": 1792864130.8862166,
+    "seen": 1793055110.5688598,
+    "ast_hash": "9096af7628f30c2013978d3efcc147ba",
+    "semantic_hash": "9096af7628f30c2013978d3efcc147ba"
+  },
+  "backend/app/requirements-dev.txt": {
+    "mtime": 1792830679.3073292,
+    "seen": 1793055110.568862,
+    "ast_hash": "9b684f1fb72a88191e0df81143f22e02",
+    "semantic_hash": "9b684f1fb72a88191e0df81143f22e02"
+  },
+  "backend/app/requirements.txt": {
+    "mtime": 1792864060.9239664,
+    "seen": 1793055110.568863,
+    "ast_hash": "6b02210f1a8de484bf75af7c7aff6455",
+    "semantic_hash": "6b02210f1a8de484bf75af7c7aff6455"
+  }
+}

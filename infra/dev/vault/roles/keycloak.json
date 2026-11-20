@@ -1,9 +1,0 @@
-{
-  "role_type": "oidc",
-  "user_claim": "preferred_username",
-  "oidc_scopes": ["openid", "profile", "email"],
-  "groups_claim": "groups",
-  "allowed_redirect_uris": ["http://localhost:8200/ui/vault/auth/oidc/oidc/callback", "http://localhost:8250/oidc/callback"],
-  "token_policies": ["default"],
-  "token_ttl": "1h"
-}
